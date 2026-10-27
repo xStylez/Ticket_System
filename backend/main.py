@@ -8,6 +8,10 @@ app = Flask(__name__)
 app.secret_key = "dev-secret"
 setup_database()
 
+@app.route("/")
+def home():
+    return redirect("/login")
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
