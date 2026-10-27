@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block page %}
+
+<main class="auth">
+    <section class="auth-card">
+        <p class="eyebrow">Ticket desk</p>
+        <h1>Welcome back</h1>
+        <p class="lede">Sign in with the username you registered.</p>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+
+        <form method = "POST" action="/login">
+            <label class="field">
+              <span>Username</span>
+              <input name="username" placeholder="Username" autocomplete="username">
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input name="password" type="password" placeholder="Password" autocomplete="current-password">
+            </label>
+            <button class="btn primary" type="submit">Log in</button>
+        </form>
+
+        <p class="switch">No account yet? <a href="/register">Register</a></p>
+    </section>
+</main>
+{% endblock %}

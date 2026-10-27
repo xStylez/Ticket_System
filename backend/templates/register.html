@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block page %}
+
+<main class = "auth">
+    <section class = "auth-card">
+        <p class = "eyebrow">Ticket desk</p>
+        <h1>Create an account</h1>
+        <p class="lede">The username is for login. The name is what appears on your tickets.</p>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="/register">
+            <label class = "field">
+                <span>Username</span>
+                <input name="username" placeholder="Username" autocomplete="username">
+            </label>
+            <label class="field">
+                <span>Password</span>
+                <input name="password" type="password" placeholder="Password" autocomplete="new-password">
+            </label>
+            <label class="field">
+                <span>Name</span>
+                <input name="name" placeholder="Your name" autocomplete="nickname">
+            </label>
+            <button class="btn primary" type="submit">Register</button>
+        </form>
+
+        <p class="switch">Already registered? <a href="/login">Log in</a></p>
+    </section>
+</main>
+
+{% endblock %}

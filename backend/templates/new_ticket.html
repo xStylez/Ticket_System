@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{%block title %}New Ticket{% endblock %}
+{%block page %}
+
+<header class="topbar">
+    <a class="brand" href="/tickets">
+      <span class="brand-mark"></span>
+      Tickets
+    </a>
+    <form method="POST" action="/logout">
+      <button class="btn ghost" type="submit">Log out</button>
+    </form>
+  </header>
+
+  <main class="shell narrow">
+    <a class ="back" href = "/tickets">Back to tickets</a>
+    <p class="eyebrow">New</p>
+    <h1>Open a ticket</h1>
+    <p class="lede">Fill out the form below to open a ticket. All fields are required.</p>
+
+    <form method="POST" action="/tickets/new">
+        <label class="field">
+            <span>Title</span>
+            <input name="title" placeholder="Title" required>
+        </label>
+        <label class="field">
+            <div class="details-box">
+                <span>Details</span>
+                <textarea id="details" name="details" rows="6" placeholder="Details" maxlength="1000" required></textarea>
+                <p class="count"><span id="details-count">0</span>/1000</p>
+            </div>
+        </label>
+        <button class="btn primary" type="submit">Create Ticket</button>
+    </form>
+
+    <script>
+        const details = document.getElementById('details');
+        const detailsCount = document.getElementById('details-count');
+
+        details.addEventListener('input', () => {
+            detailsCount.textContent = details.value.length;
+        });
+    </script>
+  </main>
+
+{%endblock%}

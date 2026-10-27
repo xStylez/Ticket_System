@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Tickets{% endblock %}
+{% block page %}
+
+<header class="topbar">
+    <a class="brand" href="/tickets">
+         <span class="brand-mark"></span>
+        Tickets
+    </a>
+    <form method="POST" action="/logout">
+        <button class="btn ghost" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="shell">
+    <div class="page-head">
+        <div>
+            <p class="eyebrow">Inbox</p>
+            <h1>Your Tickets</h1>
+        </div>
+        <a class="btn primary" href="/tickets/new">New Ticket</a>
+    </div>
+
+{% if tickets %}
+ <div class="ticket-list">
+    {% for ticket in tickets %}
+    <a class="ticket-card" href="/tickets/{{ ticket.id }}">
+      <div class="ticket-card-top">
+        {% if ticket.name %} <span class="who">{{ticket.name}}</span>{% endif %}
+        <span class="pill {{ticket.status}}">{{ticket.status}}</span>
+      </div>
+      <h2>{{ticket.title}}</h2>
+    </a>
+    {% endfor %}
+ </div>
+{% else %}
+ <div class="empty">
+    <p>No tickets yet</p>
+    <a href="/tickets/new">Make your first ticket</a>
+ </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{%block title %}Ticket{% endblock %}
+{%block page %}
+
+<header class="topbar">
+    <a class="brand" href="/tickets">
+         <span class="brand-mark"></span>
+        Tickets
+    </a>
+    <form method="POST" action="/logout">
+        <button class="btn ghost" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="shell narrow">
+  <a class="back back-link"  href="/tickets">Back to tickets</a>
+
+  <article class="ticket-hero">
+    <div class="ticket-card-top">
+        <p class="eyebrow">Opened by {{ ticket.name }}</p>
+        <span class="pill {{ ticket.status }}">{{ ticket.status }}</span>
+    </div>
+    <h1>{{ ticket.title }}</h1>
+    <p class="details">{{ ticket.details }}</p>
+  </article>
+
+  <section class="thread-wrap">
+    <h2>Replies</h2>
+     {% if replies %}
+      <ul class="thread">
+       {% for reply in replies %}
+       <li class="reply {{ reply.user_role }}">
+        <div class="reply-top">
+            <strong>{{ reply.name }}</strong>
+            <span>{% if reply.user_role == "staff" %}Staff{% else %}{{ reply.user_role }}{% endif %}</span>
+        </div>
+        <p>{{ reply.message }}</p>
+        </li>
+       {% endfor %}
+     </ul>
+     {% else %}
+      <p class="empty-line">No replies yet.</p>
+     {% endif %}
+  </section>
+
+
+   {% if ticket.status == 'open' %}
+    <form class="panel" method="POST" action="/tickets/{{ticket.id}}">
+      <label class="field">
+        <span>Reply</span>
+        <input name="message" placeholder="Write a reply">
+      </label>
+      <div class="row">
+        <button class="btn primary" type="submit">Send reply</button>
+      </div>
+    </form>
+
+    <form method="POST" action="/tickets/{{ticket.id}}">
+        <button class="btn ghost" type="submit" name="close" value="1">Close Ticket</button>
+    </form>
+    {% else %}
+    <p class="closed-note">This ticket is closed.</p>
+    {% endif %}
+
+{%endblock%}
