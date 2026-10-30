@@ -6,6 +6,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "dev-secret"
+app.permanent_session_lifetime = timedelta(minutes=30)
 setup_database()
 
 @app.route("/")
