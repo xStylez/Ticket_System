@@ -146,6 +146,7 @@ def tickets():
         SELECT tickets.id, tickets.title, tickets.details, tickets.status, users.name
         FROM tickets
         JOIN users ON users.id = tickets.user_id
+        ORDER BY CASE WHEN tickets.status = 'open' THEN 0 ELSE 1 END, tickets.id DESC
         """)
 
         tickets = [{
@@ -156,7 +157,12 @@ def tickets():
             "status": row[3]
         } for row in cursor.fetchall()]
     else:
-        cursor.execute("SELECT id, title, details, status FROM tickets WHERE user_id = ?", (session["user_id"],))
+        cursor.execute("""
+        SELECT id, title, details, status 
+        FROM tickets 
+        WHERE user_id = ?
+        ORDER BY CASE WHEN tickets.status = 'open' THEN 0 ELSE 1 END, tickets.id DESC
+        """, (session["user_id"],))
         tickets = [{
             "id": row[0],
             "title": row[1],
@@ -230,6 +236,31 @@ def ticket(ticket_id):
     
     ticket = {"id": row[0], "name": row[4], "title": row[1], "details": row[2], "status": row[3]}
     return render_template("ticketall.html", ticket=ticket, replies=replies)
+
+@app.route("/tickets/<int:ticket_id>/delete", methods=["POST"])
+def delete_ticket(ticket_id):
+    if not session.get("user_id"):
+        return redirect("/login")
+
+    if session.get("role") != "staff":
+        return redirect("/tickets")
+    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT status FROM tickets WHERE id = ?", (ticket_id,))
+    row = cursor.fetchone()
+
+    if not row or row[0] != "closed":
+        connection.close()
+        return redirect("/tickets")
+
+    cursor.execute("DELETE FROM replies WHERE ticket_id = ?", (ticket_id,))
+    cursor.execute("DELETE FROM tickets WHERE id = ?", (ticket_id,))
+    connection.commit()
+    connection.close()
+    return redirect("/tickets")
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

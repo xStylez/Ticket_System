@@ -24,13 +24,22 @@
 {% if tickets %}
  <div class="ticket-list">
     {% for ticket in tickets %}
-    <a class="ticket-card" href="/tickets/{{ ticket.id }}">
-      <div class="ticket-card-top">
-        {% if ticket.name %} <span class="who">{{ticket.name}}</span>{% endif %}
-        <span class="pill {{ticket.status}}">{{ticket.status}}</span>
-      </div>
-      <h2>{{ticket.title}}</h2>
-    </a>
+    <div>
+        <a class="ticket-card" href="/tickets/{{ ticket.id }}">
+        <div class="ticket-card-top">
+            {% if ticket.name %} <span class="who">{{ticket.name}}</span>{% endif %}
+            <span class="pill {{ticket.status}}">{{ticket.status}}</span>
+        </div>
+        <div class="ticket-card-bottom">
+            <h2>{{ticket.title}}</h2>
+            {% if session.get("role") == "staff" and ticket.status == "closed" %}
+                <form method="POST" action="/tickets/{{ticket.id}}/delete">
+                    <button class="btn delete" type="submit">❌</button>
+                </form>
+            {% endif %}
+        </div>
+        </a>
+    </div>
     {% endfor %}
  </div>
 {% else %}

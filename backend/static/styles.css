@@ -299,6 +299,26 @@ input:focus, textarea:focus {
     color: var(--closed);
 }
 
+.btn.delete {
+    background: transparent;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    padding-right: 2rem;
+    padding-top: 1.5rem;
+    align-items: center;
+}
+
+.ticket-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
 .empty {
     padding: 2.2rem;
     border-radius: 22px;
